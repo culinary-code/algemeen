@@ -69,8 +69,21 @@ For users opting for local hosting, we recommend using an OpenAI model as the pr
 # Environment variables
 
 - ## Frontend
-
+  - KEYCLOAK_BASE_URL: Start of the keycloak url appended before any calls made to keycloak. Example for local development: "http://localhost:8180"
+  - KEYCLOAK_CLIENT_ID: Name of your keycloak client. Example: "flutter-app"
+  - KEYCLOAK_REALM: Name of your keycloak realm. Example: "culinary-code-dev-realm"
+  - BACKEND_BASE_URL: Start of the backend url appended before any calls made to the backend api endpoints. Example for local development: "https://localhost:7098"
+  
 - ## Backend
+  - AZURE_OPENAI_API_KEY: OpenAI api key for the openAI services running in Azure.
+  - AZURE_OPENAI_ENDPOINT: Start of the azure openAI services url appended before any call made to these services.
+  - AZURE_STORAGE_CONNECTION_STRING: Connectionstring for the blob storage running in Azure.
+  - AZURE_STORAGE_CONTAINER_NAME: Container name for the blob storage running in Azure.
+  - KEYCLOAK_BASE_URL: Start of the keycloak url appended before any calls made to keycloak. Example for local development: "http://localhost:8180"
+  - KEYCLOAK_CLIENT_ID: Name of your keycloak client. Example: "flutter-app"
+  - KEYCLOAK_REALM: Name of your keycloak realm. Example: "culinary-code-dev-realm"
+  - KEYCLOAK_ADMIN_USERNAME: name of the admin with rights to create new accounts.
+  - KEYCLOAK_ADMIN_PASSWORD: name of the password for the admin account mentioned above.
 
 # Frontend
 
