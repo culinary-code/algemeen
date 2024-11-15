@@ -41,7 +41,24 @@ The application currently has the following features planned:
 
 - ## Set up
 
+  When you have the docker image running locally or in the cloud, go to the address provided in the docker compose file or the url in the cloud. You should see a login screen.
+  1. Log in as admin. In the provided docker file the name and password are both admin but it is recommended to change those values
+  2. On the top left you should see a dropdown menu that is currently set to the master realm
+  3. Click on that dropdown menu and create a new realm
+  4. In the json input field, select import from file and select the provided realm-export.json file in the location where you downloaded this project
+  5. You should now have a new realm, you can change the name of this realm for security purposes but be aware that you will need to change environment variables. see [[Environment_Variables]]
+
 - ## Necessary Users
+  1. Go to the user tab, this should be visible on the left hand side
+  2. Create a new user. This will become the admin user with rights to create new accounts.
+  3. After creation of the user, go to the credentials tab of that user (at the top) and create a new password. Set "temporary" to off.
+  4. Go to the role management tab of the user (at the top)
+  5. Give the user the following roles:
+        - realm-admin
+        - manage-account-links
+        - manage-account
+        - view-profile
+  6. The user should be all set up
 
 # Deploying to Azure
 
