@@ -1,10 +1,64 @@
-# How to set the project up
+# General Introduction
+
+Welcome to the culinary code app. The main goal of this application is to provide a way to manage your meals and groceries in a user-friendly way. This repo provides you with the necessary tools to do two out of our three intended uses:
+
+- [ ] Utilize our own backend api with a small fee to utilize the services
+- [x] Spin up your own backend api service and use your own openAI key for all AI services
+- [x] Spin up your own backend api service, spin up a local LLM to replace the openAI services (success not guaratneed)   
+
+To see what features the application currently has, visit [[Features]]
+
+To see what features are currently planned, visit [[Planned_Features]]
+
+To help develop these features, look at [[How_To]]
+
+
+# Features
+
+The application currently has the following features:
+
+- Logging into a keycloak account
+- Registering a new keycloak account
+- Changing the username of the keycloak account
+- Browsing recipes based on recipe names
+- See recipe details
+- Create new recipes based on a chatgpt prompt: supported identifiers include recipename, ingredients
+
+# Planned Features
+
+The application currently has the following features planned: 
+
+- Browsing recipes based on ingredients, cooktime, difficulty, preferences
+- Favoriting recipes
+- Adding recipes to a mealplanner
+- Viewing said mealplanner
+- View a grocerylist based on planned meals
+- Add items and ingredients to the grocerylist
+- Managing Account settings: preferences that automatically get added to prompts, family size
+- .... 
 
 # Keycloak
 
 - ## Set up
 
+  When you have the docker image running locally or in the cloud, go to the address provided in the docker compose file or the url in the cloud. You should see a login screen.
+  1. Log in as admin. In the provided docker file the name and password are both admin but it is recommended to change those values
+  2. On the top left you should see a dropdown menu that is currently set to the master realm
+  3. Click on that dropdown menu and create a new realm
+  4. In the json input field, select import from file and select the provided realm-export.json file in the location where you downloaded this project
+  5. You should now have a new realm, you can change the name of this realm for security purposes but be aware that you will need to change environment variables. see [[Environment_Variables]]
+
 - ## Necessary Users
+  1. Go to the user tab, this should be visible on the left hand side
+  2. Create a new user. This will become the admin user with rights to create new accounts.
+  3. After creation of the user, go to the credentials tab of that user (at the top) and create a new password. Set "temporary" to off.
+  4. Go to the role management tab of the user (at the top)
+  5. Give the user the following roles:
+        - realm-admin
+        - manage-account-links
+        - manage-account
+        - view-profile
+  6. The user should be all set up
 
 # Deploying to Azure
 
@@ -32,8 +86,21 @@ For users opting for local hosting, we recommend using an OpenAI model as the pr
 # Environment variables
 
 - ## Frontend
-
+  - KEYCLOAK_BASE_URL: Start of the keycloak url appended before any calls made to keycloak. Example for local development: "http://localhost:8180"
+  - KEYCLOAK_CLIENT_ID: Name of your keycloak client. Example: "flutter-app"
+  - KEYCLOAK_REALM: Name of your keycloak realm. Example: "culinary-code-dev-realm"
+  - BACKEND_BASE_URL: Start of the backend url appended before any calls made to the backend api endpoints. Example for local development: "https://localhost:7098"
+  
 - ## Backend
+  - AZURE_OPENAI_API_KEY: OpenAI api key for the openAI services running in Azure.
+  - AZURE_OPENAI_ENDPOINT: Start of the azure openAI services url appended before any call made to these services.
+  - AZURE_STORAGE_CONNECTION_STRING: Connectionstring for the blob storage running in Azure.
+  - AZURE_STORAGE_CONTAINER_NAME: Container name for the blob storage running in Azure.
+  - KEYCLOAK_BASE_URL: Start of the keycloak url appended before any calls made to keycloak. Example for local development: "http://localhost:8180"
+  - KEYCLOAK_CLIENT_ID: Name of your keycloak client. Example: "flutter-app"
+  - KEYCLOAK_REALM: Name of your keycloak realm. Example: "culinary-code-dev-realm"
+  - KEYCLOAK_ADMIN_USERNAME: name of the admin with rights to create new accounts.
+  - KEYCLOAK_ADMIN_PASSWORD: name of the password for the admin account mentioned above.
 
 # Frontend
 
@@ -43,9 +110,13 @@ For users opting for local hosting, we recommend using an OpenAI model as the pr
 
 # Known Bugs
 
-# Licenties
+# Licences
+  - Apache2.0
+  - Moq diff license
 
 # How to 
+
+- ## Set the project up
 
 - ## Pull Request
 
