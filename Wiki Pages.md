@@ -110,7 +110,9 @@ For users opting for local hosting, we recommend using an OpenAI model as the pr
 
 # Known Bugs
 
-# Licenties
+# Licences
+  - Apache2.0
+  - Moq diff license
 
 # How to 
 
