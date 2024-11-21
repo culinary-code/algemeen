@@ -69,6 +69,67 @@ The application currently has the following features planned:
 - ## Blob storage
 
 - ## Database
+Azure PostgreSQL database - Flexible server
+
+You can set up a PostgreSQL database on Azure using the following link: [https://portal.azure.com/#browse/Microsoft.DBforPostgreSQL%2FflexibleServers](https://portal.azure.com/#create/Microsoft.PostgreSQLFlexibleServer)
+
+Configure the specifications based on your development or production needs.
+
+Create a new user role on the database with restricted permissions to use from the backend application.
+
+- ## Keycloak
+When you set up Keycloak, you can export the currently configured realm into a json file, check out the documentation around exporting here: [Importing and Exporting Realms](https://www.keycloak.org/server/importExport)
+
+Then you can make a Dockerfile where you pull in the base Keycloak image and add your own ENTRYPOINT command where you set up import realm.
+```Dockerfile
+FROM quay.io/keycloak/keycloak:25.0.5
+
+RUN mkdir -p /opt/keycloak/data/import
+COPY ./realm-export.json /opt/keycloak/data/import
+
+EXPOSE 8080
+
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "-v", "start-dev", "--import-realm"]
+```
+
+Then you can build and push the Docker image to Docker hub for example.
+```bash
+docker build -t steffenvochten/culinarycode_idp:latest .  # tag latest so you don't have to delete and recreate the container instance on Azure for image changes
+docker push steffenvochten/culinarycode_idp:latest
+```
+
+Now on Azure you can set up a Container Instance which will pull and run your Docker image in the cloud.
+
+If you tag your docker image with latest, you can push changes to the image to docker hub, without having to delete and recreate the Container Instance, since its settings can't be changed.
+
+Set up a Container Instance on Azure using the following link https://portal.azure.com/#browse/Microsoft.ContainerInstance%2FcontainerGroups
+
+- ## Backend
+
+To deploy the app on Azure we make use of the Azure App Service.
+
+To create a Web App on Azure, use this link: https://portal.azure.com/#create/Microsoft.WebSite
+
+The runtime stack the backend application uses is .NET 8. The target operating system is Linux.
+
+Once the Web App is set up on Azure, we can push our backend application to this Web App.
+
+First, navigate to the application's root folder, then follow these steps:
+```bash
+cd .\WEBAPI\
+dotnet publish -c Release -r linux-x64 --self-contained false -o ./publish
+cd .\publish\
+zip -r ../culinarycode.zip .
+az webapp deployment source config-zip --resource-group rg-stage24-webchefs --name culinarycode --src culinarycode.zip
+```
+
+You can view application logs using this command:
+```bash
+az webapp log tail --name culinarycode --resource-group rg-stage24-webchefs
+```
+
+Finally ensure that all the environment variables are properly set up in the Web App settings on Azure, ensure that you point the environment variables for the database and Keycloak container URLs point to the proper Azure service URLs.
+
 
 # Running everything locally
 
