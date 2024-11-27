@@ -109,11 +109,53 @@ For users opting for local hosting, we recommend using an OpenAI model as the pr
 
 # Frontend
 
-## Language
+## Technology Evaluation and Choice for Frontend Development
 
-We have opted to build our frontend in flutter. The goal was to build a multiplatform application which flutter lends itself to incredibly well. 
-To make this choice we have looked at: Flutter, React Native, Kotlin and Jetpack compose.
-After a brief search we concluded Jetpack compose was not suited for the goal of a multiplatform application.
+When deciding on the technology for the frontend of our application, we conducted a thorough evaluation of several frameworks and languages. Below is an overview of the options we considered and the reasoning behind our final decision.
+
+---
+
+### **Evaluation of Frontend Technologies**
+
+#### **Flutter**
+- **Cross-platform:** Enables development for both Android and iOS from a single codebase.
+- **Extensive Documentation:** Comprehensive resources for learning and troubleshooting.
+- **Challenging but Rewarding:** A relatively new technology for our team, providing both a learning opportunity and a challenge.
+- **Complex UI Components:** Supports building intricate and visually consistent user interfaces.
+
+#### **React Native**
+- **Limited Framework:** Offers fewer built-in capabilities compared to Flutter.
+- **Familiarity:** Similar to React, which some team members already know.
+- **Native Component Differences:** Potential variations in behavior and appearance between Android and iOS due to reliance on native components.
+
+#### **Kotlin**
+- **Cross-platform Potential:** Supports cross-platform development, particularly through Kotlin Multiplatform.
+- **Java-like Syntax:** Familiar to developers with a Java background.
+- **Ease of Learning:** Straightforward for developers with Java experience.
+
+---
+
+### **Our Choice: Flutter**
+
+After evaluating the available options, we chose **Flutter** for the following reasons:
+
+1. **Cross-Platform Consistency:**  
+   Our goal is to create a cross-platform application with a consistent look and feel on both Android and iOS. Flutter excels at ensuring visual and functional parity across platforms.
+
+2. **Complex UI Requirements:**  
+   Flutter is highly recommended for developing complex and dynamic user interfaces, which aligns with the needs of our application.
+
+3. **Team Learning Opportunity:**  
+   While Flutter is a new technology for our team, this challenge presents a valuable learning opportunity. Adopting Flutter allows us to gain experience in a modern and versatile framework.
+
+4. **Comparison with Other Options:**
+   - Jetpack Compose (Kotlin) was ruled out due to its limited cross-platform capabilities.
+   - Kotlin, while easy to learn, lacks widespread internal support within our organization.
+   - React Native, though familiar to some, has limitations in consistency across platforms and fewer built-in capabilities compared to Flutter.
+
+---
+
+By choosing Flutter, we are embracing a robust framework that not only meets our technical needs but also supports our team's growth. We are confident this decision will contribute to a high-quality application and a positive development experience.
 
 
 # Backend
