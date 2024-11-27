@@ -72,6 +72,10 @@ The application currently has the following features planned:
 
 # Running everything locally
 
+## Running docker
+
+Explain docker here...
+
 ## Recommended LLM Model
 
 After extensive testing, we recommend using the GPT-4o Mini model (version: 2024-07-18) for this project. This model has consistently delivered reliable and accurate results, meeting our specific requirements.
@@ -101,8 +105,16 @@ For users opting for local hosting, we recommend using an OpenAI model as the pr
   - KEYCLOAK_REALM: Name of your keycloak realm. Example: "culinary-code-dev-realm"
   - KEYCLOAK_ADMIN_USERNAME: name of the admin with rights to create new accounts.
   - KEYCLOAK_ADMIN_PASSWORD: name of the password for the admin account mentioned above.
+  - DATABASE_JOB_MIN_AMOUNT: amount of recipes should always be in the database. At 2 am the program will remove recipes that went unused for 31 days and are not saved in favourites. After it will fill the database back up with newly generated recipes up till this value. Example value: "100"
 
 # Frontend
+
+## Language
+
+We have opted to build our frontend in flutter. The goal was to build a multiplatform application which flutter lends itself to incredibly well. 
+To make this choice we have looked at: Flutter, React Native, Kotlin and Jetpack compose.
+After a brief search we concluded Jetpack compose was not suited for the goal of a multiplatform application.
+
 
 # Backend
 
