@@ -160,6 +160,43 @@ By choosing Flutter, we are embracing a robust framework that not only meets our
 
 # Backend
 
+## Technology Evaluation and Choice for Backend Development
+
+For the backend of our application, we carefully evaluated multiple languages and frameworks to select the best fit for our technical and deployment needs. Below is a summary of the options considered and the reasoning behind our decision.
+
+---
+
+### **Evaluation of Backend Technologies**
+
+#### **Java**
+- **Robust:** A mature and widely-used language with proven stability.
+- **Extensive Support:** Backed by a large developer community and abundant resources.
+- **Compatibility with Kotlin:** Shares similarities with Kotlin, offering flexibility if we choose to expand or switch in the future.
+
+#### **.NET**
+- **Optimized for Azure:** Designed to integrate seamlessly with Azure, Microsoft's cloud platform.
+- **Efficient Data Processing:** Known for strong performance when handling large data sets.
+- **NuGet Packages:** Provides excellent Azure-related libraries and tools for streamlined deployment and integration.
+
+---
+
+### **Our Choice: .NET**
+
+We chose **.NET** as the backend framework for the following reasons:
+
+1. **Azure Deployment:**  
+   We will work with an Azure environment for hosting the application. As both .NET and Azure are Microsoft products, the synergy between the two ensures a smooth and efficient deployment process using well-supported NuGet packages.
+
+2. **Comparable Performance to Java:**  
+   Both Java and .NET offer comparable performance, making the choice largely dependent on other factors. Given .NET's Azure compatibility, it was the logical option.
+
+3. **Ease of Integration:**  
+   .NET simplifies the integration of Azure's services, saving time and effort in building and deploying the application.
+
+---
+
+By choosing .NET, we align our backend development with Azure's capabilities and ensure a robust, high-performance application. This decision leverages the strengths of Microsoft's ecosystem to deliver a seamless development and deployment experience.
+
 # Roadmap
 
 # Known Bugs
