@@ -151,7 +151,178 @@ az webapp log tail --name culinarycode --resource-group rg-stage24-webchefs
 
 Finally ensure that all the environment variables are properly set up in the Web App settings on Azure, ensure that you point the environment variables for the database and Keycloak container URLs point to the proper Azure service URLs.
 
+# Deploying to a (virtual) machine
 
+If you only care about putting the application online on your own system or a VM in the cloud and don’t want to bother with any development, we got you covered.
+
+### Required Knowledge:
+- Navigating a Linux server
+- Editing a file
+- Docker Compose
+
+---
+
+## What This Guide Covers:
+1. Using the provided Docker Compose YAML file to easily set up your own services.
+2. Getting a simple domain name for your server.
+3. Getting and setting up HTTPS certificates.
+4. Setting up a reverse proxy NGINX implementation to link requests to the right service.
+
+### What is Not Included in This Version:
+- Using blob storage for images, see **[[Blob Storage]]**.
+
+---
+
+## Using the Provided Docker Compose File
+
+The provided Compose file relies on images publicly available on Docker Hub. This means that if you want to use this method for images other than the latest version, you have to change the links at `image` for both `idp_keycloak` and `backend`.
+
+### Inside the Docker Network
+There are four different containers:
+1. **Keycloak container** with a custom image for a necessary admin user (`idp_keycloak`).
+2. **Postgres (Alpine version)** database for everything related to the Keycloak container (`idp_postgres`).
+3. **Backend container** for running the back-end image (`backend`).
+4. **Postgres database** container for everything related to the back-end container (`postgres`).
+
+### Important Steps:
+1. Change out the environment variables for each container pertaining to usernames, passwords, and database names. 
+2. Ensure these changes reflect in the corresponding environment variables in other containers.
+
+#### Keycloak Environment Variables:
+- Username, database name, and password for the IDP database container must be reflected in:
+  - `KC_DB_USERNAME`
+  - `KC_DB_PASSWORD`
+  - `KC_DB_URL_DATABASE`
+
+#### Backend Environment Variables:
+- Username, database name, and password for the backend database container must be reflected in `Database__ConnectionString`.
+- **Keycloak Admin Credentials**: Use `KEYCLOAK_ADMIN` and `KEYCLOAK_ADMIN_PASSWORD` logging into the admin console, Change these for your own values.
+- **Optional Variables**:
+  - To disable image generation, set the `ImageGeneration` variable to `false`.
+  - For Azure storage, update the connection string with your details.
+  - Email service can remain blank if unused.
+
+#### Cronjob Details:
+- Used for automatic database updates:
+  - Modify the `MinimumAmount` variable to control recipe creation. At the specified time in the schedule, the backend will run a job to fill up the database to that amount and delete unused recipes.
+  - Set the `CronSchedule` variable using standard cron syntax. Look up how to edit these values. Currently it is set to run at 2 AM every day. This is dependent on your device time.
+
+---
+
+## Getting a Domain Name for Your Server
+
+To make your server publicly accessible, you will need two domain names:
+1. One for the back-end service (**domain1**).
+2. One for the Keycloak identity provider (**domain2**).
+
+Both domains should point to the same IP address of your (Virtual) Machine. Follow these steps:
+
+1. Use a service like **Duck DNS** for free domain names or any other domain name provider.
+2. Update the environment variables in the Docker containers:
+   - Set `Keycloak__FrontendUrl` in the backend container to the domain reserved for Keycloak.
+
+---
+
+## Getting and Setting Up HTTPS Certificates
+
+### Prerequisites:
+- Ensure Docker Compose is running, and your domain names point to the correct IP address.
+
+## Getting and Setting Up HTTPS Certificates
+
+We are about to ensure the services can run over HTTPS and are trusted by mobile devices. We will accomplish this using a tool called Certbot. Before proceeding, we need to install NGINX because Certbot will detect its installation and automatically adjust some files.
+
+To install NGINX, run the following commands:
+
+```bash
+sudo apt-get update
+sudo apt-get install nginx
+```
+
+To install Certbot onto your device, run the following command:
+
+```bash
+sudo apt install certbot python3-certbot-nginx
+```
+
+After installation, create your certificates (replace `domain1` and `domain2` with your actual domain names):
+
+```bash
+sudo certbot --nginx -d domain1 -d domain2
+```
+
+This command should return the location of the newly created certificates. Keep this location in mind for the next step.
+
+---
+
+## Setting Up a Reverse Proxy NGINX Implementation to Link Requests to the Right Service
+
+Navigate to the location provided by the previous Certbot command. For example: `/etc/nginx/sites-available/`. Edit the `default` file. While the file may already include a lot of data, you can leave most of it out. Ensure the file includes the links to the `ssl_certificate` and `ssl_certificate_key` automatically added by Certbot. Make sure to copy these values.
+
+This file contains the configuration to set up the reverse proxy. The goal is to direct incoming requests:
+- **Domain1** should link to the Back-end container.
+- **Domain2** should link to the Keycloak container.
+
+Below is a sample configuration file you can copy and paste. Replace the placeholders (`domain1`, `domain2`) with your actual domain names:
+
+```nginx
+# Set-up of the back-end service. Any requests coming in on domain1 will be forwarded to the correct port. Change out domain1 for your actual domain name.
+server {
+    listen 443 ssl; 
+    server_name domain1;
+
+    ssl_certificate /etc/letsencrypt/live/domain1/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/domain1/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+    location / {
+        proxy_pass http://localhost:5114;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+# Set-up of the keycloak service. any requests coming in on domain2 will be forwarded to the correct port. Change out domain2 for your actual domain name.
+server {
+    listen 443 ssl; # managed by Certbot
+    server_name domain2;
+
+    ssl_certificate /etc/letsencrypt/live/domain2/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/domain2/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+    location / {
+        proxy_pass http://localhost:8180;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+# This will redirect http requests to https requests when they are made to the right domain names. Change out domain1 and domain2 for the actual 
+server {
+    if ($host = domain2) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    if ($host = domain1) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+        listen 80 ;
+        listen [::]:80 ;
+    server_name domain2 domain1;
+    return 404; # managed by Certbot
+
+}
+```
 # Running everything locally
 
 ## Running docker
