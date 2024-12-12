@@ -153,7 +153,7 @@ Finally ensure that all the environment variables are properly set up in the Web
 
 # Deploying to a (virtual) machine
 
-If you only care about putting the application online on your own system or a vm in the cloud and don’t want to bother with any development, we got you covered.
+If you only care about putting the application online on your own system or a VM in the cloud and don’t want to bother with any development, we got you covered.
 
 ### Required Knowledge:
 - Navigating a Linux server
