@@ -52,7 +52,6 @@ The application currently has the following features planned:
   5. Use the name you have given in the environment variables for both the front-end and back-end project. see [[Environment_Variables]]
 
 - ## Necessary Users
-  This is used only for local development. If you want to only use the application on a local environment, you can skip this step.
   1. Go to the user tab, this should be visible on the left hand side
   2. Create a new user. This will become the admin user with rights to create new accounts. 
   3. After creation of the user, go to the credentials tab of that user (at the top) and create a new password. Set "temporary" to off.
@@ -323,11 +322,11 @@ server {
 
 }
 ```
-# Running everything locally
+# Running everything locally for development purposes
 
 ## Running docker
 
-Explain docker here...
+In case you want to develop some feature for this application, the easiest way to get the different services running would be through docker. We have provided a docker-compose file that does not include the backend service so you can easily run all required services at once.
 
 ## Recommended LLM Model
 
@@ -343,6 +342,7 @@ For users opting for local hosting, we recommend using an OpenAI model as the pr
 # Environment variables
 
 - ## Frontend
+  All environment variables should be put in the .env file. See the .env.template for a quick copy paste of the required structure.
   - KEYCLOAK_BASE_URL: Start of the Keycloak url appended before any calls made to Keycloak. Example for local development: "http://localhost:8180"
   - KEYCLOAK_CLIENT_ID: Name of your Keycloak client. Example: "flutter-app"
   - KEYCLOAK_REALM: Name of your Keycloak realm. Example: "culinary-code-dev-realm"
@@ -350,6 +350,9 @@ For users opting for local hosting, we recommend using an OpenAI model as the pr
   - DEVELOPMENT_MODE: A boolean "true" or "false" as strings which will switch the frontend to less safer http calls instead of https with simplified login steps to make development for the app way easier. DO NOT LEAVE THIS ON "false" IN DEPLOYMENT!
   
 - ## Backend
+  All environment variables should be set in the run configuration. In Rider this can be done through Run > Edit configurations > + (for a new configuration) > Select .NET Project > inside the "Environment variables" all of these should be set.
+
+  We have provided a text file with default values that can be changed but be aware that Rider puts '\' before special characters when importing these which should be removed.
   - ASPNETCORE_ENVIRONMENT=Development;                         # Development, Staging, Production
   - ASPNETCORE_HTTPS_PORT=443;   
   - ASPNETCORE_URLS=https://0.0.0.0:7098\;http://0.0.0.0:5114;
@@ -473,9 +476,72 @@ By choosing .NET, we align our backend development with Azure's capabilities and
 # How to 
 
 - ## Set the project up
-
+    - In Azure [[Deploying to Azure]]
+    - In a Virtual Machine [[Deploying to a VM]]
+    - In a developer environment [[Running everything locally]]
+ 
 - ## Pull Request
 
-- ## Report Bugs
+  When submitting a pull request:
 
-- ## Ask questions
+  1. **Use the Template**: Always follow the provided pull request template to ensure that all relevant details are included. Pull requests that do not adhere to the template may be closed without review.
+   
+  2. **Be Clear and Concise**: Clearly describe the purpose of your pull request, the problem it addresses, and the proposed solution. Include relevant details such as screenshots, logs, or examples if applicable.
+
+  3. **Use Tags**: Use appropriate tags to categorize your pull request:
+     - `enhancement` for new features or enhancements.
+     - `bug` for bug reports with a proposed fix.
+
+  4. **Be Patient**: Project maintainers will review your pull request as soon as possible. Review times may vary, so please be patient and avoid repeated follow-ups within a short time frame.
+
+  5. **Collaborate**: Be open to feedback and willing to make changes. The maintainers or community may request updates to align your contribution with the project’s standards.
+
+- ## How to Communicate About the Project
+
+This guide outlines how to communicate effectively about this project using GitHub **issues**. Whether proposing new features, reporting bugs, or asking questions, all communication should be done through issues, using the appropriate tags.
+
+### Reporting Bugs
+
+To report a bug:
+
+1. **Open an Issue**: Use the `bug` tag to categorize your issue. Include as much detail as possible:
+   - A clear and concise title summarizing the issue.
+   - Steps to reproduce the problem.
+   - The expected behavior versus the observed behavior.
+   - Relevant logs, screenshots, or code snippets.
+
+2. **Engage with Feedback**: Be prepared to answer questions or provide additional details if requested by maintainers or community members.
+
+### Proposing New Features
+
+To suggest a new feature or enhancement:
+
+1. **Open an Issue**: Use the `enhancement` tag to categorize your suggestion. Include:
+   - A clear and concise title summarizing your feature request.
+   - A description of the problem the feature will solve or the improvement it will bring.
+   - Any relevant mockups, examples, or references that explain your idea.
+
+2. **Explain the Impact**: Clearly articulate how the feature will benefit the project and its users.
+
+3. **Be Open to Discussion**: Engage with feedback from maintainers or other contributors, as they may propose alternative solutions or request additional clarification.
+
+### Asking Questions
+
+If you have a question about the project:
+
+1. **Open an Issue**: Use the `question` tag to categorize your query. Provide enough context to help others understand your question.
+
+2. **Be Specific**: Clearly state what you need help with or what you are trying to understand.
+
+3. **Check Existing Resources**: Before opening a question, review the project’s documentation and existing issues to ensure your question hasn’t already been answered.
+
+4. **Be Patient**: Responses may take time, depending on the availability of maintainers and contributors.
+
+### General Guidelines
+
+- **Respectful Communication**: Always be respectful and constructive in your interactions. Refer to the project’s Code of Conduct for guidance on maintaining a positive environment.
+- **Use Tags**: Always use the appropriate tags (`bug`, `enhancement`, `question`) to help categorize your issue and make it easier for maintainers to address.
+- **Provide Relevant Details**: Whether reporting a bug, suggesting a feature, or asking a question, include all necessary context to facilitate understanding and resolution.
+- **Collaborate**: Engage in discussions within the issue thread to refine your contribution and explore solutions collaboratively.
+
+By following these guidelines, you help ensure a productive and welcoming environment for all contributors. Thank you for supporting the project!
