@@ -4,7 +4,7 @@ Welcome to the Culinary Code app. Culinary Code helps users efficiently manage m
 
 - [ ] Utilize our own backend api with a small fee to utilize the services
 - [x] Spin up your own backend api service and use your own openAI key for all AI services
-- [x] Spin up your own backend api service, spin up a local LLM to replace the openAI services (success not guaranteed)   
+- [x] Spin up your own backend api service, spin up a local LLM to replace the openAI services (success not guaranteed)
 
 To see what features the application currently has, visit [[Features]]
 
@@ -22,48 +22,50 @@ The application currently has the following features:
 - Browsing recipes based on recipe names and other filters like: cooktime, difficulty, ingredients
 - Viewing recipes in detail
 - Adding reviews to recipes
-- Creating new recipes based on a chatgpt prompt: supported identifiers include recipe name, ingredients, cooking time, difficulty, preferences
+- Creating new recipes based on a ChatGPT prompt: supported identifiers include recipe name, ingredients, cooking time, difficulty, preferences
 - Viewing and managing favorite recipes
 - Adding recipes to a mealplanner
-- Viewing and managing a grocery list, this is linked to the mealplanner.
-- Managing Account settings: preferences that automatically get added to prompts, family size
+- Viewing and managing a grocery list, which is linked to the mealplanner.
+- Managing account settings: preferences that automatically get added to prompts, family size
+- Groups: users can join groups together and share a mealplanner and grocery list
 
 # Planned Features
 
 The application currently has the following features planned: 
 
-- Groups which have their own mealplanner and grocerylist
 - Being able to edit recipes after they are created
 - Adding your own recipes to the app database
 - Adding images to the recipes to show others your creations
-- Support for other languages than dutch
+- Support languages for other than Dutch
 - Being able to change the difficulty of a recipe based on user feedback
 - Functionality based on groups like marking attendance to a meal
 - Being able to manage what ingredients you already have and automatically using those to create new recipes
 
 # Keycloak
 
-- ## Custom Set up without import file
+- ## Custom set up without import file
 
-  When you have the docker image running locally or in the cloud, go to the address provided in the docker compose file or the url in the cloud. You should see a login screen.
-  1. Log in as admin. In the provided docker file the name and password are both admin, but it is recommended to change those values
-  2. On the top left you should see a dropdown menu that is currently set to the master realm
-  3. Click on that dropdown menu and create a new realm
-  5. Use the name you have given in the environment variables for both the front-end and back-end project. see [[Environment_Variables]]
+  When you have the docker image running locally or in the cloud, go to the address provided in the Docker compose file or the url in the cloud. You should see a login screen.
+  1. Log in as admin. In the provided Dockerfile the name and password are both admin, but it is recommended to change those values.
+  2. On the top left you should see a dropdown menu that is currently set to the master realm.
+  3. Click on that dropdown menu and create a new realm.
+  5. Use the name you have given in the environment variables for both the front-end and back-end project, see [[Environment_Variables]].
 
 - ## Necessary Users
-  1. Go to the user tab, this should be visible on the left hand side
+  1. Go to the user tab, this should be visible on the left hand side.
   2. Create a new user. This will become the admin user with rights to create new accounts. 
   3. After creation of the user, go to the credentials tab of that user (at the top) and create a new password. Set "temporary" to off.
-  4. Go to the role management tab of the user (at the top)
+  4. Go to the role management tab of the user (at the top).
   5. Give the user the following roles:
         - realm-admin
         - manage-account-links
         - manage-account
         - view-profile
-  6. The user should be all set up
+  6. The user should be all set up.
 
 # Deploying to Azure
+
+Note: For the Azure links you need to have an account on Azure.
 
 - ## GPT
 For the deployment of the GPT model, we make use of Azure OpenAI Service. You can set up an OpenAI service on Azure using the following link:
@@ -75,12 +77,12 @@ We used the GPT-4o Mini model for this project. A breakdown of why we chose this
 Once the service is set up, you can get the API key and endpoint from the Azure portal and set them as environment variables in the backend application.
 
 - ## Image generator
-For recipe image generation, we make use of a DALL-E 3 deployment on Azure. You can set up a DALL-E 3 model deployment on Azure OpenAI Studio.
+For recipe image generation, we make use of a DALL-E 3 deployment on Azure. You can set up a DALL-E 3 model deployment on [Azure OpenAI Studio](https://oai.azure.com/).
 
 Once the service is set up, you can get the API key and endpoint from the Azure portal and set them as environment variables in the backend application.
 
 - ## Blob storage
-Azure Blob storage is used to store images generated by the DALL-E 3 model. You can set up a Blob storage on Azure using the following link: [https://portal.azure.com/#create/Microsoft.StorageAccount](https://portal.azure.com/#create/Microsoft.StorageAccount)
+Azure Blob storage is used to store images generated by the DALL-E 3 model. You can set up a Blob storage on Azure using the following link: [Microsoft Storage Account](https://portal.azure.com/#create/Microsoft.StorageAccount)
 
 Once the Blob storage is set up, you can get the connection string and container name from the Azure portal and set them as environment variables in the backend application.
 
@@ -91,7 +93,7 @@ Also ensure you configure the CORS settings of the Blob storage to allow request
 - ## Database
 Azure PostgreSQL database - Flexible server
 
-You can set up a PostgreSQL database on Azure using the following link: [https://portal.azure.com/#browse/Microsoft.DBforPostgreSQL%2FflexibleServers](https://portal.azure.com/#create/Microsoft.PostgreSQLFlexibleServer)
+You can set up a PostgreSQL database on Azure using the following link: [DB for PostgreSQL Flexible Servers](https://portal.azure.com/#create/Microsoft.PostgreSQLFlexibleServer)
 
 Configure the specifications based on your development or production needs.
 
@@ -120,9 +122,9 @@ docker push steffenvochten/culinarycode_idp:latest
 
 Now on Azure you can set up a Container Instance which will pull and run your Docker image in the cloud.
 
-If you tag your docker image with latest, you can push changes to the image to docker hub, without having to delete and recreate the Container Instance, since its settings can't be changed.
+If you tag your docker image with latest, you can push changes to the image to Docker hub, without having to delete and recreate the Container Instance, since its settings can't be changed.
 
-Set up a Container Instance on Azure using the following link https://portal.azure.com/#browse/Microsoft.ContainerInstance%2FcontainerGroups
+Set up a Container Instance on Azure using the following link: [Container Instance](https://portal.azure.com/#browse/Microsoft.ContainerInstance%2FcontainerGroups)
 
 - ## Backend
 
