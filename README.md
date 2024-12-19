@@ -1,7 +1,7 @@
 # Algemeen
 
-Project overstijgende issues.
+Project-wide issues.
 
-Diagrammen en wireframes.
+Diagrams and wireframes.
 
-Wiki voor het project
+Wiki for the project: [[Wiki]]
